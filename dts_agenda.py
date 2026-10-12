@@ -5,7 +5,7 @@ Leest het programma van de teampagina op dtsede.nl en maakt er een
 iCalendar-feed van die je als abonnement in Google/Apple/Outlook toevoegt.
 
 Gebruik:
-    pip install beautifulsoup4
+    pip install beautifulsoup4 tzdata     # tzdata is nodig op Windows
     python dts_agenda.py            # schrijft dts-ede-4.ics
     python dts_agenda.py --serve    # serveert http://localhost:8000/dts-ede-4.ics
 """
@@ -105,8 +105,19 @@ def update_cache(nieuw: list[dict]) -> list[dict]:
     oud = json.loads(CACHE_BESTAND.read_text()) if CACHE_BESTAND.exists() else {}
     nu = datetime.now(TZ)
     nieuwe_codes = {w["code"] for w in nieuw}
-    resultaat = {c: w for c, w in oud.items()
-                 if c in nieuwe_codes or datetime.fromisoformat(w["start"]) < nu}
+    # De site toont maar een paar wedstrijden vooruit. Een wedstrijd die ná de
+    # laatst getoonde valt, is waarschijnlijk alleen uit beeld geschoven: bewaren.
+    # Alleen wat binnen het getoonde venster had moeten staan, is echt weg.
+    laatste = max((datetime.fromisoformat(w["start"]) for w in nieuw), default=None)
+
+    def bewaren(code, w):
+        start = datetime.fromisoformat(w["start"])
+        if code in nieuwe_codes or start < nu:
+            return True
+        # niets gevonden (site gewijzigd/storing)? dan niets weggooien
+        return laatste is None or start > laatste
+
+    resultaat = {c: w for c, w in oud.items() if bewaren(c, w)}
     for w in nieuw:
         resultaat[w["code"]] = w
     CACHE_BESTAND.write_text(json.dumps(resultaat, indent=2, ensure_ascii=False))

@@ -30,5 +30,13 @@
     "uit": "WAVV 2",
     "accommodatie": "Sportpark Inschoten",
     "url": "https://www.dtsede.nl/match-details?wedstrijdcode=20897931"
+  },
+  "20891497": {
+    "code": "20891497",
+    "start": "2026-11-21T12:15:00+01:00",
+    "thuis": "DTS '35 Ede 4",
+    "uit": "sv DFS 2",
+    "accommodatie": "Sportpark Inschoten",
+    "url": "https://www.dtsede.nl/match-details?wedstrijdcode=20891497"
   }
 }

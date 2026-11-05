@@ -38,5 +38,13 @@
     "uit": "sv DFS 2",
     "accommodatie": "Sportpark Inschoten",
     "url": "https://www.dtsede.nl/match-details?wedstrijdcode=20891497"
+  },
+  "20915511": {
+    "code": "20915511",
+    "start": "2026-12-05T12:00:00+01:00",
+    "thuis": "Fortissimo 2",
+    "uit": "DTS '35 Ede 4",
+    "accommodatie": "Sportpark Hoekelumse Eng",
+    "url": "https://www.dtsede.nl/match-details?wedstrijdcode=20915511"
   }
 }
